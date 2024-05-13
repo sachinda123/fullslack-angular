@@ -1,74 +1,119 @@
-[![RealWorld Frontend](https://img.shields.io/badge/realworld-frontend-%23783578.svg)](http://realworld.io)
-[![Build Status](https://travis-ci.org/gothinkster/angular-realworld-example-app.svg?branch=master)](https://travis-ci.org/gothinkster/angular-realworld-example-app)
+## React Redux JWT Authentication & Authorization example
 
-# ![Angular Example App](logo.png)
+Build a React Redux Token Authentication example with JWT, LocalStorage, React Router, Axios and Bootstrap:
+- JWT Authentication Flow for User Signup & User Login
+- Project Structure for React Redux JWT Authentication, LocalStorage, Router, Axios
+- Working with Redux Actions, Reducers, Store for Application state
+- Creating React Components with Form Validation
+- React Components for accessing protected Resources (Authorization)
+- Dynamic Navigation Bar in React App
 
-> ### Angular codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
+## User Registration and User Login Flow
+For JWT Authentication, we’re gonna call 2 endpoints:
 
-<a href="https://stackblitz.com/edit/angular-realworld" target="_blank"><img width="187" src="https://github.com/gothinkster/realworld/blob/master/media/edit_on_blitz.png?raw=true" /></a>&nbsp;&nbsp;<a href="https://thinkster.io/tutorials/building-real-world-angular-2-apps" target="_blank"><img width="384" src="https://raw.githubusercontent.com/gothinkster/realworld/master/media/learn-btn-hr.png" /></a>
+- POST `api/auth/signup` for User Registration
+- POST `api/auth/signin` for User Login
 
-### [Demo](https://angular.realworld.io)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
+The following flow shows you an overview of Requests and Responses that React Client will make or receive. This React Client must add a JWT to HTTP Header before sending request to protected resources.
 
-This codebase was created to demonstrate a fully fledged application built with Angular that interacts with an actual backend server including CRUD operations, authentication, routing, pagination, and more. We've gone to great lengths to adhere to the [Angular Styleguide](https://angular.io/styleguide) & best practices.
+![react-jwt-authentication-flow](react-jwt-authentication-flow.png)
 
-Additionally, there is an Angular 1.5 version of this codebase that you can [fork](https://github.com/gothinkster/angularjs-realworld-example-app) and/or [learn how to recreate](https://thinkster.io/angularjs-es6-tutorial).
+For more detail, please visit:
+> [React Redux JWT Authentication & Authorization example](https://bezkoder.com/react-redux-jwt-auth/)
 
-# How it works
+> [React - How to Logout when Token is expired](https://www.bezkoder.com/react-logout-token-expired/)
 
-We're currently working on some docs for the codebase (explaining where functionality is located, how it works, etc) but the codebase should be straightforward to follow as is. We've also released a [step-by-step tutorial w/ screencasts](https://thinkster.io/tutorials/building-real-world-angular-2-apps) that teaches you how to recreate the codebase from scratch.
+> [React Hooks + Redux: JWT Authentication & Authorization example](https://bezkoder.com/react-hooks-redux-login-registration-example/)
 
-### Making requests to the backend API
+> [React JWT Authentication & Authorization (without Redux) example](https://bezkoder.com/react-jwt-auth/)
 
-For convenience, we have a live API server running at https://conduit.productionready.io/api for the application to make requests against. You can view [the API spec here](https://github.com/GoThinkster/productionready/blob/master/api) which contains all routes & responses for the server.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-The source code for the backend server (available for Node, Rails and Django) can be found in the [main RealWorld repo](https://github.com/gothinkster/realworld).
+### Set port
+.env
+```
+PORT=8081
+```
 
-If you want to change the API URL to a local server, simply edit `src/environments/environment.ts` and change `api_url` to the local server's URL (i.e. `localhost:3000/api`). Please note you will probably need to use a proxy in order to avoid Cross-Origin Resource (CORS) issues. (more info: [Proxying to a backend server](https://angular.io/guide/build#proxying-to-a-backend-server) )
+## Note:
+Open `src/services/auth-header.js` and modify `return` statement for appropriate back-end (found in the tutorial).
 
-# Getting started
+```js
+export default function authHeader() {
+  const user = JSON.parse(localStorage.getItem('user'));
 
-Make sure you have the [Angular CLI](https://github.com/angular/angular-cli#installation) installed globally. We use [Yarn](https://yarnpkg.com) to manage the dependencies, so we strongly recommend you to use it. you can install it from [Here](https://yarnpkg.com/en/docs/install), then run `yarn install` to resolve all dependencies (might take a minute).
+  if (user && user.accessToken) {
+    // return { Authorization: 'Bearer ' + user.accessToken }; // for Spring Boot back-end
+    return { 'x-access-token': user.accessToken };             // for Node.js Express back-end
+  } else {
+    return {};
+  }
+}
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Project setup
 
-### Building the project
+In the project directory, you can run:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+```
+npm install
+# or
+yarn install
+```
 
-## Functionality overview
+or
 
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication. You can view a live demo over at https://angular.realworld.io
+### Compiles and hot-reloads for development
 
-**General functionality:**
+```
+npm start
+# or
+yarn start
+```
 
-- Authenticate users via JWT (login/signup pages + logout button on settings page)
-- CRU\* users (sign up & settings page - no deleting required)
-- CRUD Articles
-- CR\*D Comments on articles (no updating required)
-- GET and display paginated lists of articles
-- Favorite articles
-- Follow other users
+Open [http://localhost:8081](http://localhost:8081) to view it in the browser.
 
-**The general page breakdown looks like this:**
+The page will reload if you make edits.
 
-- Home page (URL: /#/ )
-  - List of tags
-  - List of articles pulled from either Feed, Global, or by Tag
-  - Pagination for list of articles
-- Sign in/Sign up pages (URL: /#/login, /#/register )
-  - Uses JWT (store the token in localStorage)
-  - Authentication can be easily switched to session/cookie based
-- Settings page (URL: /#/settings )
-- Editor page to create/edit articles (URL: /#/editor, /#/editor/article-slug-here )
-- Article page (URL: /#/article/article-slug-here )
-  - Delete article button (only shown to article's author)
-  - Render markdown from server client side
-  - Comments section at bottom of page
-  - Delete comment button (only shown to comment's author)
-- Profile page (URL: /#/profile/:username, /#/profile/:username/favorites )
-  - Show basic user info
-  - List of articles populated from author's created articles or author's favorited articles
+## Related Posts
+> [In-depth Introduction to JWT-JSON Web Token](https://bezkoder.com/jwt-json-web-token/)
 
-<br />
+> [React.js CRUD example to consume Web API](https://bezkoder.com/react-crud-web-api/)
 
-[![Brought to you by Thinkster](https://raw.githubusercontent.com/gothinkster/realworld/master/media/end.png)](https://thinkster.io)
+> [React Redux CRUD App example with Rest API](https://bezkoder.com/react-redux-crud-example/)
+
+> [React Pagination example](https://bezkoder.com/react-pagination-material-ui/)
+
+> [React File Upload with Axios and Progress Bar to Rest API](https://bezkoder.com/react-file-upload-axios/)
+
+Fullstack (JWT Authentication & Authorization example):
+> [React + Spring Boot](https://bezkoder.com/spring-boot-react-jwt-auth/)
+
+> [React + Node.js Express](https://bezkoder.com/react-express-authentication-jwt/)
+
+Fullstack CRUD with Node.js Express:
+> [React.js + Node.js Express + MySQL](https://bezkoder.com/react-node-express-mysql/)
+
+> [React.js + Node.js Express + PostgreSQL](https://bezkoder.com/react-node-express-postgresql/)
+
+> [React.js + Node.js Express + MongoDB](https://bezkoder.com/react-node-express-mongodb-mern-stack/)
+
+Fullstack CRUD with Spring Boot:
+> [React.js + Spring Boot + MySQL](https://bezkoder.com/react-spring-boot-crud/)
+
+> [React.js + Spring Boot + PostgreSQL](https://bezkoder.com/spring-boot-react-postgresql/)
+
+> [React.js + Spring Boot + MongoDB](https://bezkoder.com/react-spring-boot-mongodb/)
+
+Fullstack CRUD with Django:
+> [React.js + Django Rest Framework](https://bezkoder.com/django-react-axios-rest-framework/)
+
+Integration (run back-end & front-end on same server/port)
+> [How to integrate React.js with Spring Boot](https://bezkoder.com/integrate-reactjs-spring-boot/)
+
+> [Integrate React with Node.js Express on same Server/Port](https://bezkoder.com/integrate-react-express-same-server-port/)
+
+Serverless:
+> [React Firebase CRUD App with Realtime Database](https://bezkoder.com/react-firebase-crud/)
+
+> [React Firestore CRUD App example | Firebase Cloud Firestore](https://bezkoder.com/react-firestore-crud/)

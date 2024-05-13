@@ -46,20 +46,14 @@ app.use("/user", passport.authenticate("jwt", { session: false }), require("./ro
 
 // Routes
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body.user;
-  const user = await User.findOne({ where: { [Op.and]: [{ userName: email }, { password: password }] } });
+  const { username, password } = req.body;
+  const user = await User.findOne({ where: { [Op.and]: [{ userName: username }, { password: password }] } });
   if (user) {
     const time = Date.now();
     const token = jwt.sign({ id: user.id, time: time }, jwtOptions.secretOrKey);
 
     res.json({
-      user: {
-        email: email,
-        token: token,
-        username: email,
-        bio: "ddd",
-        image: "sss",
-      },
+      accessToken: token,
     });
   } else {
     res.status(401).json({ message: "Invalid username or password" });
