@@ -17,6 +17,17 @@ const MovieDetail = ({ id, handle }) => {
     fetchMovies();
   }, [id]);
 
+  const generateRating = (vote) => {
+    return (
+      <>
+        <i className="bi bi-star"></i>
+        <i className="bi bi-star-fill"></i>
+        <i className="bi bi-star-half"></i>
+        <i className="bi bi-star"></i>
+      </>
+    );
+  };
+
   console.log("movieData", movieData);
 
   return (
@@ -36,7 +47,11 @@ const MovieDetail = ({ id, handle }) => {
           <div className="col-10">
             <h1>{new Date(movieData.release_date).getFullYear()}</h1>
           </div>
-          <div className="col-2">Add TO wish list</div>
+          <div className="col-2">
+            <button className="wish-list-btn">
+              <i className="bi bi-bookmark-fill"></i>
+            </button>
+          </div>
         </div>
 
         <div className="title">Reviews</div>
@@ -45,10 +60,7 @@ const MovieDetail = ({ id, handle }) => {
             <div className="vote">{movieData && movieData.vote_average && movieData.vote_average.toFixed(1)}</div>
             <div className="vote-total">/10</div>
           </div>
-          <div className="col-2 star">
-            <span className="fa fa-star checked"></span>
-            <span className="fa fa-star checked"></span>
-          </div>
+          <div className="col-2 star">{generateRating(movieData.vote_average)}</div>
         </div>
         <div className="title">Synopis</div>
         <p>{movieData.overview}</p>

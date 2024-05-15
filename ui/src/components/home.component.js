@@ -47,45 +47,45 @@ const Home = () => {
             <div>
               <div>Genere:</div>
               <div>
-                <select className="form-select rounded-button" aria-label="Default select example">
+                {/* <select className="form-select rounded-button" aria-label="Default select example">
                   <option selected>select</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
-                </select>
+                </select> */}
               </div>
             </div>
             <div>
               <div>Rating:</div>
               <div>
-                <select className="form-select rounded-button" aria-label="Default select example">
+                {/* <select className="form-select rounded-button" aria-label="Default select example">
                   <option selected>select</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
-                </select>
+                </select> */}
               </div>
             </div>
             <div>
               <div>Year:</div>
               <div>
-                <select className="form-select rounded-button" aria-label="Default select example">
+                {/* <select className="form-select rounded-button" aria-label="Default select example">
                   <option selected>select</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
-                </select>
+                </select> */}
               </div>
             </div>
             <div>
               <div>Order By:</div>
               <div>
-                <select className="form-select rounded-button" aria-label="Default select example">
+                {/* <select className="form-select rounded-button" aria-label="Default select example">
                   <option selected>select</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
-                </select>
+                </select> */}
               </div>
             </div>
           </div>

@@ -207,3 +207,15 @@ label {
   justify-content: center;
   align-items: center;
 }
+.wish-list-btn {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 17px;
+  border: none;
+}
+.bi-bookmark-fill {
+  color: #aaa;
+}
+.bi-star-fill {
+  color: yellow;
+}
