@@ -89,13 +89,14 @@ class Register extends Component {
     });
 
     this.form.validateAll();
+    const { history } = this.props;
 
     if (this.checkBtn.context._errors.length === 0) {
       this.props
-        .dispatch(
-          register(this.state.username, this.state.email, this.state.password)
-        )
+        .dispatch(register(this.state.username, this.state.email, this.state.password))
         .then(() => {
+          history.push("/");
+
           this.setState({
             successful: true,
           });
@@ -110,15 +111,10 @@ class Register extends Component {
 
   render() {
     const { message } = this.props;
-
     return (
       <div className="col-md-12">
         <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
+          <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="profile-img" className="profile-img-card" />
 
           <Form
             onSubmit={this.handleRegister}
@@ -130,38 +126,17 @@ class Register extends Component {
               <div>
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    validations={[required, vusername]}
-                  />
+                  <Input type="text" className="form-control" name="username" value={this.state.username} onChange={this.onChangeUsername} validations={[required, vusername]} />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChangeEmail}
-                    validations={[required, email]}
-                  />
+                  <Input type="text" className="form-control" name="email" value={this.state.email} onChange={this.onChangeEmail} validations={[required, email]} />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
-                  <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
-                    validations={[required, vpassword]}
-                  />
+                  <Input type="password" className="form-control" name="password" value={this.state.password} onChange={this.onChangePassword} validations={[required, vpassword]} />
                 </div>
 
                 <div className="form-group">
@@ -172,7 +147,7 @@ class Register extends Component {
 
             {message && (
               <div className="form-group">
-                <div className={ this.state.successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+                <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
                   {message}
                 </div>
               </div>

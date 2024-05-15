@@ -3,10 +3,9 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
       userName: DataTypes.STRING,
       password: DataTypes.STRING,
+      email: DataTypes.STRING,
       RoleId: DataTypes.INTEGER,
     },
     { timestamps: false, charset: "utf8", collate: "utf8_general_ci" }

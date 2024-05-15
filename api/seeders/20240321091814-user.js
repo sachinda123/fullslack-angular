@@ -3,22 +3,19 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const dataToInsert = [
       {
-        firstName: "owner",
-        lastName: "owner",
+        email: "owner@gmail.com",
         userName: "owner",
         password: "123",
         RoleId: 1,
       },
       {
-        firstName: "managers",
-        lastName: "managers",
+        email: "managers@gmail.com",
         userName: "managers",
         password: "123",
         RoleId: 2,
       },
       {
-        firstName: "cashiers",
-        lastName: "cashiers",
+        email: "cashiers@gmail.com",
         userName: "cashiers",
         password: "123",
         RoleId: 3,
