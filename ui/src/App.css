@@ -141,10 +141,14 @@ label {
 }
 .movie-detail-right h1 {
   color: #454545;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .title {
   font-weight: 900;
   font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .pagination {
   display: inline-block;
@@ -216,6 +220,21 @@ label {
 .bi-bookmark-fill {
   color: #aaa;
 }
-.bi-star-fill {
-  color: yellow;
+.bi-star-fill,
+.bi-star-half,
+.bi-star {
+  color: #ffa534;
+  padding: 0.2rem;
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+  margin-right: 0.5rem;
+}
+
+.genre {
+}
+.genre-container {
+  display: flex;
+  color: #aaa;
 }

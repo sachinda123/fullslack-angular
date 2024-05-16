@@ -1,76 +1,43 @@
-import React, { Component } from "react";
-import MovieService from "../services/movie.service";
+import React, { useState, useEffect } from "react";
 
-export default class MovieTable extends Component {
-  constructor(props) {
-    super(props);
+const MovieTable = ({ movieList, handleClick }) => {
+  const [movies, setMovies] = useState([]);
 
-    this.state = {
-      movieData: {},
-      showForm: false, // Add state for controlling form visibility
-      formData: {
-        name: "",
-        email: "",
-      },
-    };
+  useEffect(() => {
+    console.log("movieList", movieList);
+    setMovies(movieList);
+  }, [movieList]);
 
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({
-      movieData: MovieService.getMovies(),
-    });
-  }
-
-  // handleButtonClick() {
-  //   // Toggle form visibility
-  //   this.setState({ showForm: true });
-  // }
-
-  // handleInputChange(event) {
-  //   const { name, value } = event.target;
-  //   this.setState((prevState) => ({
-  //     formData: {
-  //       ...prevState.formData,
-  //       [name]: value,
-  //     },
-  //   }));
-  // }
-
-  render() {
-    const { movieData } = this.state;
-
-    return (
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col-2">Image</th>
-            <th scope="col-4">title</th>
-            <th scope="col-2">Genere</th>
-            <th scope="col-1">Rating</th>
-            <th scope="col-2">Year</th>
-            <th scope="col-1">Action</th>
+  return (
+    <table className="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col-2">Image</th>
+          <th scope="col-4">Title</th>
+          <th scope="col-2">Genere</th>
+          <th scope="col-1">Rating</th>
+          <th scope="col-2">Year</th>
+          <th scope="col-1">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {movies?.map((item, index) => (
+          <tr key={index}>
+            <th scope="col-2">
+              <img src={"https://image.tmdb.org/t/p/w200" + item.poster_path} alt="" width="100" height="100" className="container-image" />
+            </th>
+            <th scope="col-4">{item.title}</th>
+            <th scope="col-2">{item && item?.genre_ids && item?.genre_ids.length > 0 && item?.genre_ids[0]}</th>
+            <th scope="col-1">{item.vote_average.toFixed(1)}</th>
+            <th scope="col-2">{new Date(item.release_date).getFullYear()}</th>
+            <th scope="col-1" onClick={() => handleClick(item)}>
+              <i className="bi bi-eye"></i>
+            </th>
           </tr>
-        </thead>
-        <tbody>
-          {movieData.results?.map((item, index) => (
-            <tr key={index}>
-              <th scope="col-2">
-                <img src={"https://image.tmdb.org/t/p/w200" + item.backdrop_path} alt="" width="100" height="100" className="container-image" />
-              </th>
-              <th scope="col-4">{item.title}</th>
-              <th scope="col-2">Genere</th>
-              <th scope="col-1">{item.vote_average}</th>
-              <th scope="col-2">{item.release_date}</th>
-              <th scope="col-1">
-                <i className="fa">&#xf06e;</i>
-              </th>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
-}
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+export default MovieTable;

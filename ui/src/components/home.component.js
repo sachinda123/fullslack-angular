@@ -1,24 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { getMovies } from "../services/movie.service";
 import MovieDetail from "../components/movieDetail.component";
+import MovieTable from "../components/movietable.component";
+import Menu from "./menu.component";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchMovies } from "../actions/movieActions";
 
 const Home = () => {
-  const [movieData, setMovieData] = useState({});
+  const dispatch = useDispatch();
   const [movieId, setMovieId] = useState("");
   const [pageId, setPageId] = useState(1);
+  const { loading, movies, error } = useSelector((state) => state.movies);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedRating, setSelectedRating] = useState("");
+  const [sortOrder, setSortOrder] = useState("Asc");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const data = await getMovies(pageId);
-        setMovieData(data);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    };
+    dispatch(fetchMovies(pageId));
+  }, [dispatch, pageId]);
 
-    fetchMovies();
-  }, [pageId]);
+  useEffect(() => {
+    let filtered = movies;
+    if (selectedYear) {
+      filtered = movies.filter((movie) => new Date(movie.release_date).getFullYear().toString() === selectedYear);
+    }
+    if (selectedRating) {
+      filtered = filtered.filter((movie) => Math.floor(movie.vote_average) === parseInt(selectedRating));
+    }
+    if (sortOrder) {
+      filtered = filtered.sort((a, b) => {
+        if (sortOrder === "Asc") {
+          return a.title.localeCompare(b.title);
+        } else if (sortOrder === "Desc") {
+          return b.title.localeCompare(a.title);
+        } else {
+          return 0;
+        }
+      });
+    }
+
+    setFilteredMovies(filtered);
+  }, [selectedYear, movies, selectedRating, sortOrder]);
 
   const handleClick = (item) => {
     item ? setMovieId(item.id) : setMovieId("");
@@ -27,113 +50,56 @@ const Home = () => {
   const handlePageClick = (id) => {
     setPageId(id);
   };
+  const handleChange = (type, event) => {
+    switch (type) {
+      case "year":
+        setSelectedYear(event.target.value);
+        break;
+      case "rating":
+        setSelectedRating(event.target.value);
+        break;
+      case "orderby":
+        setSortOrder(event.target.value);
+        break;
+      case "search":
+        setSearchQuery(event.target.value);
+        break;
+      case "searchBtn":
+        setSearchQuery(event.target.value);
+        break;
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="container">
-      {!movieId && (
+      {!movieId ? (
         <>
-          <div className="row">
-            <div className="col-10">
-              <div className="form-group has-search">
-                <span className="fa fa-search form-control-feedback"></span>
-                <input type="text" className="form-control" />
-              </div>
-            </div>
-            <div className="col-2">
-              <button className="rounded-button">Search</button>
-            </div>
-          </div>
-          <div className="selectMenu">
-            <div>
-              <div>Genere:</div>
-              <div>
-                {/* <select className="form-select rounded-button" aria-label="Default select example">
-                  <option selected>select</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select> */}
-              </div>
-            </div>
-            <div>
-              <div>Rating:</div>
-              <div>
-                {/* <select className="form-select rounded-button" aria-label="Default select example">
-                  <option selected>select</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select> */}
-              </div>
-            </div>
-            <div>
-              <div>Year:</div>
-              <div>
-                {/* <select className="form-select rounded-button" aria-label="Default select example">
-                  <option selected>select</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select> */}
-              </div>
-            </div>
-            <div>
-              <div>Order By:</div>
-              <div>
-                {/* <select className="form-select rounded-button" aria-label="Default select example">
-                  <option selected>select</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select> */}
-              </div>
-            </div>
-          </div>
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col-2">Image</th>
-                <th scope="col-4">Title</th>
-                <th scope="col-2">Genere</th>
-                <th scope="col-1">Rating</th>
-                <th scope="col-2">Year</th>
-                <th scope="col-1">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {movieData.results?.map((item, index) => (
-                <tr key={index}>
-                  <th scope="col-2">
-                    <img src={"https://image.tmdb.org/t/p/w200" + item.poster_path} alt="" width="100" height="100" className="container-image" />
-                  </th>
-                  <th scope="col-4">{item.title}</th>
-                  <th scope="col-2">Genere</th>
-                  <th scope="col-1">{item.vote_average.toFixed(1)}</th>
-                  <th scope="col-2">{new Date(item.release_date).getFullYear()}</th>
-                  <th scope="col-1" onClick={() => handleClick(item)}>
-                    <i className="fa">&#xf06e;</i>
-                  </th>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Menu handleChange={handleChange} selectedYear={selectedYear} selectedRating={selectedRating} sortOrder={sortOrder} searchQuery={searchQuery} />
+          <MovieTable movieList={filteredMovies} handleClick={handleClick} />
         </>
+      ) : (
+        <MovieDetail id={movieId} handle={handleClick} />
       )}
-      {movieId && <MovieDetail id={movieId} handle={handleClick} />}
       {!movieId && (
         <div className="pagination">
-          <a href="#" className="nav-left">
+          <button className="nav-left" onClick={() => handlePageClick("prev")}>
             &laquo;
-          </a>
-          <a href="#" onClick={() => handlePageClick(1)}>
-            1
-          </a>
-          <a href="#" className="active" onClick={() => handlePageClick(2)}>
+          </button>
+          <button onClick={() => handlePageClick(1)}>1</button>
+          <button className="active" onClick={() => handlePageClick(2)}>
             2
-          </a>
-          <a href="#" className="nav-right">
+          </button>
+          <button className="nav-right" onClick={() => handlePageClick("next")}>
             &raquo;
-          </a>
+          </button>
         </div>
       )}
     </div>

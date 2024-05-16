@@ -18,17 +18,37 @@ const MovieDetail = ({ id, handle }) => {
   }, [id]);
 
   const generateRating = (vote) => {
+    const totalStars = 5;
+    const fullStars = Math.floor(vote / 2);
+    const halfStar = vote % 2 >= 1;
+
     return (
       <>
-        <i className="bi bi-star"></i>
-        <i className="bi bi-star-fill"></i>
-        <i className="bi bi-star-half"></i>
-        <i className="bi bi-star"></i>
+        {[...Array(totalStars)].map((star, index) => {
+          if (index < fullStars) {
+            return <i className="bi bi-star-fill"></i>;
+          } else if (index === fullStars && halfStar) {
+            return <i className="bi bi-star-half"></i>;
+          } else {
+            return <i className="bi bi-star"></i>;
+          }
+        })}
       </>
     );
   };
-
-  console.log("movieData", movieData);
+  const generateGenre = ({ genres }) => {
+    return (
+      <p className="genre">
+        {genres?.map((genre, index) => {
+          if (genres.length - 1 == index) {
+            return genre.name;
+          } else {
+            return genre.name + " / ";
+          }
+        })}
+      </p>
+    );
+  };
 
   return (
     <div className="movie-detail-container">
@@ -53,6 +73,10 @@ const MovieDetail = ({ id, handle }) => {
             </button>
           </div>
         </div>
+        <div className="genre-container">
+          <i className="bi bi-tag-fill rotate-90"></i>
+          {generateGenre(movieData)}
+        </div>
 
         <div className="title">Reviews</div>
         <div className="row">
@@ -60,7 +84,7 @@ const MovieDetail = ({ id, handle }) => {
             <div className="vote">{movieData && movieData.vote_average && movieData.vote_average.toFixed(1)}</div>
             <div className="vote-total">/10</div>
           </div>
-          <div className="col-2 star">{generateRating(movieData.vote_average)}</div>
+          <div className="col-2 star">{movieData && movieData.vote_average && generateRating(movieData.vote_average.toFixed(1))}</div>
         </div>
         <div className="title">Synopis</div>
         <p>{movieData.overview}</p>
