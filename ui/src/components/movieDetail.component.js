@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { getSingleMovie } from "../services/movie.service";
+import { useDispatch, useSelector } from "react-redux";
+import { getSingleMovie } from "../actions/movieActions";
 
 const MovieDetail = ({ id, handle }) => {
-  const [movieData, setMovieData] = useState({});
-
+  const dispatch = useDispatch();
+  const movie = useSelector((state) => state.movies.movie);
+  const loading = useSelector((state) => state.movies.loading);
+  const error = useSelector((state) => state.movies.error);
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const data = await getSingleMovie(id);
-        setMovieData(data);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    };
-
-    fetchMovies();
-  }, [id]);
+    dispatch(getSingleMovie(id));
+  }, [dispatch, id]);
 
   const generateRating = (vote) => {
     const totalStars = 5;
     const fullStars = Math.floor(vote / 2);
     const halfStar = vote % 2 >= 1;
-
     return (
       <>
         {[...Array(totalStars)].map((star, index) => {
@@ -36,7 +29,7 @@ const MovieDetail = ({ id, handle }) => {
       </>
     );
   };
-  const generateGenre = ({ genres }) => {
+  const generateGenre = (genres) => {
     return (
       <p className="genre">
         {genres?.map((genre, index) => {
@@ -49,6 +42,8 @@ const MovieDetail = ({ id, handle }) => {
       </p>
     );
   };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="movie-detail-container">
@@ -56,16 +51,16 @@ const MovieDetail = ({ id, handle }) => {
         <button onClick={handle} className="reverseButton">
           Home
         </button>
-        {">"} {movieData?.title}
+        {">"} {movie?.title}
         <div className="movie-detail-image">
-          <img src={"https://image.tmdb.org/t/p/original" + movieData.poster_path} alt="" />
+          <img src={"https://image.tmdb.org/t/p/original" + movie?.poster_path} alt="" />
         </div>
       </div>
       <div className="movie-detail-right">
-        <h2>{movieData?.title}</h2>
+        <h2>{movie?.title}</h2>
         <div className="row">
           <div className="col-10">
-            <h1>{new Date(movieData.release_date).getFullYear()}</h1>
+            <h1>{new Date(movie?.release_date).getFullYear()}</h1>
           </div>
           <div className="col-2">
             <button className="wish-list-btn">
@@ -75,19 +70,19 @@ const MovieDetail = ({ id, handle }) => {
         </div>
         <div className="genre-container">
           <i className="bi bi-tag-fill rotate-90"></i>
-          {generateGenre(movieData)}
+          {generateGenre(movie?.genres)}
         </div>
 
         <div className="title">Reviews</div>
         <div className="row">
           <div className="col-10 vote-container">
-            <div className="vote">{movieData && movieData.vote_average && movieData.vote_average.toFixed(1)}</div>
+            <div className="vote">{movie && movie.vote_average && movie.vote_average.toFixed(1)}</div>
             <div className="vote-total">/10</div>
           </div>
-          <div className="col-2 star">{movieData && movieData.vote_average && generateRating(movieData.vote_average.toFixed(1))}</div>
+          <div className="col-2 star">{movie && movie.vote_average && generateRating(movie.vote_average.toFixed(1))}</div>
         </div>
         <div className="title">Synopis</div>
-        <p>{movieData.overview}</p>
+        <p>{movie?.overview}</p>
       </div>
     </div>
   );
