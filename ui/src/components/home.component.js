@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MovieDetail from "../components/movieDetail.component";
-import MovieTable from "../components/movietable.component";
+import MovieTable from "./movietable.component";
 import Menu from "./menu.component";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchMovies } from "../actions/movieActions";
@@ -105,6 +105,8 @@ const Home = () => {
           Navbar
         </a> */}
         <div>
+          <a href="/login">Lovin</a>
+
           <i class="bi bi-bookmark-fill"></i>
           <i class="bi bi-person-circle"></i>
           <i class="bi bi-box-arrow-right"></i>

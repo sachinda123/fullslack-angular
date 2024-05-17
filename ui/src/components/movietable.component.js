@@ -4,7 +4,6 @@ const MovieTable = ({ movieList, handleClick, getNameById }) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    console.log("movieList", movieList);
     setMovies(movieList);
   }, [movieList]);
 

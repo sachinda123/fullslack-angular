@@ -1,7 +1,7 @@
-label {
+/* label {
   display: block;
   margin-top: 10px;
-}
+} */
 
 .card-container.card {
   max-width: 350px !important;
@@ -20,7 +20,7 @@ label {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
 
-.profile-img-card {
+/* .profile-img-card {
   width: 96px;
   height: 96px;
   margin: 0 auto 10px;
@@ -28,63 +28,6 @@ label {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-}
-/* .container {
-  background-color: grey;
-  height: calc(100vh - 5rem);
-}
-.search-container {
-  display: flex;
-  justify-content: space-around;
-}
-.search-input {
-  margin-right: 2rem;
-  border-radius: 15px;
-}
-.rounded-button {
-  padding: 0px 20px;
-  border-radius: 15px;
-}
-
-.has-search .form-control {
-  padding-left: 2.375rem;
-} */
-
-/* .has-search .form-control-feedback {
-  position: absolute;
-  z-index: 2;
-  display: block;
-  width: 2.375rem;
-  height: 2.375rem;
-  line-height: 2.375rem;
-  text-align: center;
-  pointer-events: none;
-  color: #aaa;
-} */
-
-/* .search-container {
-  position: relative;
-  width: 250px;
-  margin: 50px auto;
-}
-
-.search-input {
-  width: 100%;
-  padding: 10px 40px 10px 10px; 
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 25px; 
-  box-sizing: border-box;
-}
-
-.search-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #999;
-  pointer-events: none; 
 } */
 
 .rounded-button {
@@ -116,6 +59,10 @@ label {
 
 .container-image {
   object-fit: cover;
+}
+.wish-list-container {
+  display: flex;
+  margin-top: 2rem;
 }
 .movie-detail-container {
   display: flex;
@@ -262,6 +209,7 @@ label {
 }
 .flexBox {
   display: flex;
+  margin-top: 1rem;
 }
 .navbar {
   margin-bottom: 1.5rem;
@@ -271,4 +219,8 @@ label {
 }
 .searchbtn .rounded-button {
   background-color: unset;
+}
+.signbtn {
+  margin-top: 2rem;
+  width: -webkit-fill-available;
 }
