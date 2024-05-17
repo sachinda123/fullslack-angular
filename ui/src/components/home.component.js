@@ -99,40 +99,52 @@ const Home = () => {
   }
 
   return (
-    <div className="container">
-      {!movieId ? (
-        <>
-          <Menu
-            handleChange={handleChange}
-            selectedYear={selectedYear}
-            selectedRating={selectedRating}
-            sortOrder={sortOrder}
-            searchQuery={searchQuery}
-            genres={genres}
-            selectedGenere={selectedGenere}
-          />
-          <MovieTable movieList={filteredMovies} handleClick={handleClick} getNameById={getNameById} />
-          {!movieId && (
-            <div className="pagination">
-              <button className="nav-left navigation" onClick={() => handlePageClick(-1)}>
-                &laquo;
-              </button>
-              <button className="navigation middle" onClick={() => handlePageClick(1)}>
-                1
-              </button>
-              <button className="navigation middle" onClick={() => handlePageClick(2)}>
-                2
-              </button>
-              <button className="nav-right navigation" onClick={() => handlePageClick(1)}>
-                &raquo;
-              </button>
-            </div>
-          )}
-        </>
-      ) : (
-        <MovieDetail id={movieId} handle={handleClick} key={movieId} />
-      )}
-    </div>
+    <>
+      <nav class="navbar navbar-light bg-light">
+        {/* <a class="navbar-brand" href="#">
+          Navbar
+        </a> */}
+        <div>
+          <i class="bi bi-bookmark-fill"></i>
+          <i class="bi bi-person-circle"></i>
+          <i class="bi bi-box-arrow-right"></i>
+        </div>
+      </nav>
+      <div className="container">
+        {!movieId ? (
+          <>
+            <Menu
+              handleChange={handleChange}
+              selectedYear={selectedYear}
+              selectedRating={selectedRating}
+              sortOrder={sortOrder}
+              searchQuery={searchQuery}
+              genres={genres}
+              selectedGenere={selectedGenere}
+            />
+            <MovieTable movieList={filteredMovies} handleClick={handleClick} getNameById={getNameById} />
+            {!movieId && (
+              <div className="pagination">
+                <button className="nav-left navigation" onClick={() => handlePageClick(-1)}>
+                  &laquo;
+                </button>
+                <button className="navigation middle" onClick={() => handlePageClick(1)}>
+                  1
+                </button>
+                <button className="navigation middle" onClick={() => handlePageClick(2)}>
+                  2
+                </button>
+                <button className="nav-right navigation" onClick={() => handlePageClick(1)}>
+                  &raquo;
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <MovieDetail id={movieId} handle={handleClick} key={movieId} />
+        )}
+      </div>
+    </>
   );
 };
 

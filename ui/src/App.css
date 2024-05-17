@@ -89,7 +89,7 @@ label {
 
 .rounded-button {
   padding: 0px 20px;
-  border-radius: 15px;
+  border-radius: 15px !important;
 }
 
 .has-search .form-control {
@@ -111,6 +111,7 @@ label {
   display: flex;
   column-gap: 2rem;
   margin-bottom: 2rem;
+  margin-top: 1rem;
 }
 
 .container-image {
@@ -118,6 +119,7 @@ label {
 }
 .movie-detail-container {
   display: flex;
+  margin-top: 2rem;
 }
 .movie-detail-left {
   width: 40%;
@@ -232,8 +234,6 @@ label {
   margin-right: 0.5rem;
 }
 
-.genre {
-}
 .genre-container {
   display: flex;
   color: #aaa;
@@ -262,4 +262,13 @@ label {
 }
 .flexBox {
   display: flex;
+}
+.navbar {
+  margin-bottom: 1.5rem;
+}
+.searchbtn {
+  display: flex;
+}
+.searchbtn .rounded-button {
+  background-color: unset;
 }

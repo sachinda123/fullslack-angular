@@ -29,7 +29,7 @@ const Menu = ({ selectedYear, handleChange, selectedRating, sortOrder, searchQue
             />
           </div>
         </div>
-        <div className="col-2">
+        <div className="col-2 searchbtn">
           <button
             className="rounded-button"
             onClick={(e) => {
@@ -46,7 +46,6 @@ const Menu = ({ selectedYear, handleChange, selectedRating, sortOrder, searchQue
           <div>
             <select
               className="form-select rounded-button"
-              aria-label="Default select example"
               id="genere"
               value={selectedGenere}
               onChange={(e) => {
@@ -72,7 +71,6 @@ const Menu = ({ selectedYear, handleChange, selectedRating, sortOrder, searchQue
                 handleChange("rating", e);
               }}
               className="form-select rounded-button"
-              aria-label="Default select example"
             >
               <option value="">All</option>
               {[...Array(11).keys()].map((rating) => (
@@ -88,7 +86,6 @@ const Menu = ({ selectedYear, handleChange, selectedRating, sortOrder, searchQue
           <div>
             <select
               className="form-select rounded-button"
-              aria-label="Default select example"
               id="year"
               value={selectedYear}
               onChange={(e) => {
@@ -111,7 +108,6 @@ const Menu = ({ selectedYear, handleChange, selectedRating, sortOrder, searchQue
           <div>
             <select
               className="form-select rounded-button"
-              aria-label="Default select example"
               id="order"
               value={sortOrder}
               onChange={(e) => {
