@@ -4,6 +4,7 @@ import MovieTable from "../components/movietable.component";
 import Menu from "./menu.component";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchMovies } from "../actions/movieActions";
+import genres from "../config/genres.config";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,8 @@ const Home = () => {
   const [selectedRating, setSelectedRating] = useState("");
   const [sortOrder, setSortOrder] = useState("Asc");
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchButtonClicked, setSearchButtonClicked] = useState(false);
+  const [selectedGenere, setSelectedGenere] = useState("");
 
   useEffect(() => {
     dispatch(fetchMovies(pageId));
@@ -34,22 +37,27 @@ const Home = () => {
           return a.title.localeCompare(b.title);
         } else if (sortOrder === "Desc") {
           return b.title.localeCompare(a.title);
-        } else {
-          return 0;
         }
       });
     }
-
+    if (searchQuery) {
+      filtered = filtered.filter((movie) => movie.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    }
+    if (selectedGenere) {
+      filtered = filtered.filter((movie) => {
+        if (movie.genre_ids.length > 0) {
+          return movie.genre_ids[0] == selectedGenere;
+        }
+        return false;
+      });
+    }
     setFilteredMovies(filtered);
-  }, [selectedYear, movies, selectedRating, sortOrder]);
+  }, [selectedYear, movies, selectedRating, sortOrder, searchButtonClicked, searchQuery, selectedGenere]);
 
   const handleClick = (item) => {
     item ? setMovieId(item.id) : setMovieId("");
   };
 
-  const handlePageClick = (id) => {
-    setPageId(id);
-  };
   const handleChange = (type, event) => {
     switch (type) {
       case "year":
@@ -65,15 +73,27 @@ const Home = () => {
         setSearchQuery(event.target.value);
         break;
       case "searchBtn":
-        setSearchQuery(event.target.value);
+        setSearchButtonClicked(!searchButtonClicked);
+        break;
+      case "genre":
+        setSelectedGenere(event.target.value);
         break;
     }
+  };
+  const getNameById = (id) => {
+    const genre = genres.find((genre) => genre.id === id);
+    return genre ? genre.name : null;
+  };
+
+  const handlePageClick = (id) => {
+    console.log("page click", id);
+
+    //  setPageId(id);
   };
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -82,25 +102,35 @@ const Home = () => {
     <div className="container">
       {!movieId ? (
         <>
-          <Menu handleChange={handleChange} selectedYear={selectedYear} selectedRating={selectedRating} sortOrder={sortOrder} searchQuery={searchQuery} />
-          <MovieTable movieList={filteredMovies} handleClick={handleClick} />
+          <Menu
+            handleChange={handleChange}
+            selectedYear={selectedYear}
+            selectedRating={selectedRating}
+            sortOrder={sortOrder}
+            searchQuery={searchQuery}
+            genres={genres}
+            selectedGenere={selectedGenere}
+          />
+          <MovieTable movieList={filteredMovies} handleClick={handleClick} getNameById={getNameById} />
+          {!movieId && (
+            <div className="pagination">
+              <button className="nav-left navigation" onClick={() => handlePageClick(-1)}>
+                &laquo;
+              </button>
+              <button className="navigation middle" onClick={() => handlePageClick(1)}>
+                1
+              </button>
+              <button className="navigation middle" onClick={() => handlePageClick(2)}>
+                2
+              </button>
+              <button className="nav-right navigation" onClick={() => handlePageClick(1)}>
+                &raquo;
+              </button>
+            </div>
+          )}
         </>
       ) : (
-        <MovieDetail id={movieId} handle={handleClick} />
-      )}
-      {!movieId && (
-        <div className="pagination">
-          <button className="nav-left" onClick={() => handlePageClick("prev")}>
-            &laquo;
-          </button>
-          <button onClick={() => handlePageClick(1)}>1</button>
-          <button className="active" onClick={() => handlePageClick(2)}>
-            2
-          </button>
-          <button className="nav-right" onClick={() => handlePageClick("next")}>
-            &raquo;
-          </button>
-        </div>
+        <MovieDetail id={movieId} handle={handleClick} key={movieId} />
       )}
     </div>
   );

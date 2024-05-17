@@ -26,11 +26,11 @@ const MovieDetail = ({ id, handle }) => {
       <>
         {[...Array(totalStars)].map((star, index) => {
           if (index < fullStars) {
-            return <i className="bi bi-star-fill"></i>;
+            return <i key={index} className="bi bi-star-fill"></i>;
           } else if (index === fullStars && halfStar) {
-            return <i className="bi bi-star-half"></i>;
+            return <i key={index} className="bi bi-star-half"></i>;
           } else {
-            return <i className="bi bi-star"></i>;
+            return <i key={index} className="bi bi-star"></i>;
           }
         })}
       </>

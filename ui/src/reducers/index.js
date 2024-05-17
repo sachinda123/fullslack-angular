@@ -1,18 +1,8 @@
-// import { combineReducers } from "redux";
-import auth from "./auth";
-// import message from "./message";
-
-// export default combineReducers({
-//   auth,
-// });
-
-// src/reducers/index.js
 import { combineReducers } from "redux";
+import authReducer from "./authReducer";
 import movieReducer from "./movieReducer";
 
-const rootReducer = combineReducers({
+export default combineReducers({
+  auth: authReducer,
   movies: movieReducer,
-  auth,
 });
-
-export default rootReducer;
